@@ -41,9 +41,9 @@ defmodule CORSPlug do
   # headers specific to OPTIONS request
   defp headers(conn = %Plug.Conn{method: "OPTIONS"}, options) do
     headers(%{conn | method: nil}, options) ++ [
-      {"access-control-max-age", "#{options[:max_age]}"},
-      {"access-control-allow-headers", allowed_headers(options[:headers], conn)},
-      {"access-control-allow-methods", options[:methods]}
+      {"Access-Control-Max-Age", "#{options[:max_age]}"},
+      {"Access-Control-Allow-Headers", allowed_headers(options[:headers], conn)},
+      {"Access-Control-Allow-Methods", options[:methods]}
     ]
   end
 
@@ -53,16 +53,16 @@ defmodule CORSPlug do
     vary_header    = vary_header(allowed_origin, get_resp_header(conn, "vary"))
 
     vary_header ++ [
-      {"access-control-allow-origin", allowed_origin},
-      {"access-control-expose-headers", options[:expose]},
-      {"access-control-allow-credentials", "#{options[:credentials]}"}
+      {"Access-Control-Allow-Origin", allowed_origin},
+      {"Access-Control-Expose-Headers", options[:expose]},
+      {"Access-Control-Allow-Credentials", "#{options[:credentials]}"}
     ]
   end
 
   # Allow all requested headers
   defp allowed_headers(["*"], conn) do
     conn
-    |> get_req_header("access-control-request-headers")
+    |> get_req_header("Access-Control-Request-Headers")
     |> List.first()
   end
 
